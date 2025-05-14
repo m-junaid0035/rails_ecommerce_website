@@ -1,0 +1,50 @@
+<% content_for :title, "Categories" %>
+
+<!-- Main content container (should be in a flex parent alongside sidebar) -->
+<div class="flex-1 p-4">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="font-bold text-4xl">Categories</h1>
+    <%= link_to "New category", new_admin_category_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  </div>
+
+  <div class="flex flex-col w-full">
+    <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
+      <div class="py-2 inline-block min-w-full">
+        <div class="overflow-x-auto">
+          <table class="min-w-full overflow-x-scroll">
+            <thead class="bg-white border-b">
+              <tr>
+                <th scope="col" class="text-sm font-medium text-gray-800 px-6 py-4 text-left"></th>
+                <th scope="col" class="text-sm font-medium text-gray-800 px-6 py-4 text-left">Name</th>
+                <th scope="col" class="text-sm font-medium text-gray-800 px-6 py-4 text-left">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @admin_categories.each do |c| %>
+                <tr class="bg-gray-50 border-b">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 underline">
+                    <% if c.image.attached? %>
+                     <%= image_tag url_for(c.image.variant(:thumb)), class: "rounded object-contain w-12 h-12" %>
+                    <% else %>
+                      <%= image_tag "https://via.placeholder.com/50", class: "rounded object-contain w-12 h-12" %>
+                    <% end %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 underline">
+                    <%= link_to c.name, edit_admin_category_path(c) %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                    <%= c.description %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
