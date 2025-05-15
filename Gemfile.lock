@@ -115,7 +115,7 @@ GEM
     et-orbi (1.2.11)
       tzinfo
     ffi (1.17.2-x86_64-linux-gnu)
-    font-awesome-sass (6.5.2)
+    font-awesome-sass (6.7.2)
       sassc (~> 2.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
@@ -370,7 +370,7 @@ DEPENDENCIES
   capybara
   debug
   devise (~> 4.9)
-  font-awesome-sass (~> 6.5.1)
+  font-awesome-sass (~> 6.7.2)
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
