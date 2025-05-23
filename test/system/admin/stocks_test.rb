@@ -38,7 +38,7 @@ class Admin::StocksTest < ApplicationSystemTestCase
 
   test "should destroy Stock" do
     visit admin_stock_url(@admin_stock)
-    accept_confirm { click_on "Destroy this stock", match: :first }
+    click_on "Destroy this stock", match: :first
 
     assert_text "Stock was successfully destroyed"
   end

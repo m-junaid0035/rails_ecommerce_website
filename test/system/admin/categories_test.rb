@@ -36,7 +36,7 @@ class Admin::CategoriesTest < ApplicationSystemTestCase
 
   test "should destroy Category" do
     visit admin_category_url(@admin_category)
-    accept_confirm { click_on "Destroy this category", match: :first }
+    click_on "Destroy this category", match: :first
 
     assert_text "Category was successfully destroyed"
   end

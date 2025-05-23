@@ -40,7 +40,7 @@ class Admin::OrdersTest < ApplicationSystemTestCase
 
   test "should destroy Order" do
     visit admin_order_url(@admin_order)
-    accept_confirm { click_on "Destroy this order", match: :first }
+    click_on "Destroy this order", match: :first
 
     assert_text "Order was successfully destroyed"
   end

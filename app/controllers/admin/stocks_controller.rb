@@ -1,5 +1,5 @@
 class Admin::StocksController < AdminController
-  before_action :set_admin_stock, only: %i[show edit update destroy]
+  before_action :set_admin_stock, only: %i[ show edit update destroy ]
 
   # GET /admin/stocks or /admin/stocks.json
   def index
@@ -56,13 +56,12 @@ class Admin::StocksController < AdminController
     @admin_stock.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_product_stocks_url(@admin_stock.product), status: :see_other, notice: "Stock was successfully destroyed." }
+      format.html { redirect_to admin_product_stocks_url, notice: "Stock was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
-
     # Use callbacks to share common setup or constraints between actions.
     def set_admin_stock
       @admin_stock = Stock.find(params[:id])
