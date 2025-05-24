@@ -9,19 +9,25 @@
   </div>
   <div>
     <strong class="block font-medium mb-1">Total:</strong>
-    <%= order.total %>
+    <%= number_to_currency(order.total) %> <!-- if you want currency formatting -->
   </div>
   <div>
     <strong class="block font-medium mb-1">Address:</strong>
     <%= order.address %>
   </div>
+  
   <% if order.order_products.any? %>
-    <strong class="block font-medium mb-1">Products:</strong>
-    <% order.order_products.each do |op| %>
-    <%= op.product.name %>
-    <%= op.size %>
-    <%= op.quantity %>
-    <% end %>
+    <div>
+      <strong class="block font-medium mb-2">Products:</strong>
+      <ul class="space-y-2 list-disc list-inside">
+        <% order.order_products.each do |op| %>
+          <li>
+            <span class="font-semibold"><%= op.product.name %></span> — 
+            Size: <%= op.size %>, 
+            Quantity: <%= op.quantity %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
-
 </div>

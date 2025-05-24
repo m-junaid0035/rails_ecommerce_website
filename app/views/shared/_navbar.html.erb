@@ -1,0 +1,107 @@
+<nav class="fixed w-full top-0 bg-white z-50 shadow-md border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+
+      <!-- Left: Logo -->
+      <div class="flex-shrink-0">
+        <%= link_to root_path, class: "flex items-center space-x-2" do %>
+          <%= image_tag 'logo.png', alt: "Ecomm Logo", class: 'h-10 w-auto' %>
+          <span class="text-xl font-bold text-gray-800">Ecomm</span>
+        <% end %>
+      </div>
+
+      <!-- Desktop Links -->
+      <div class="hidden lg:flex items-center space-x-6">
+        <%= link_to contact_path, class: nav_link_classes do %>
+          <%= icon 'fa-solid', 'phone', class: "w-5 h-5" %>
+          <span>Contact</span>
+        <% end %>
+
+        <%= link_to about_path, class: nav_link_classes do %>
+          <%= icon 'fa-solid', 'info-circle', class: "w-5 h-5" %>
+          <span>About</span>
+        <% end %>
+
+        <%= link_to cart_path, class: nav_link_classes do %>
+          <%= icon 'fa-solid', 'shopping-cart', class: "w-5 h-5" %>
+          <span>Cart</span>
+        <% end %>
+
+        <% if admin_signed_in? %>
+          <div class="relative group">
+            <button class="flex items-center space-x-1 text-indigo-700 font-semibold focus:outline-none">
+              <%= icon 'fa-solid', 'user-circle', class: "w-6 h-6" %>
+              <span>Account</span>
+              <%= icon 'fa-solid', 'chevron-down', class: "w-4 h-4 ml-1" %>
+            </button>
+
+            <!-- Dropdown menu -->
+            <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50">
+              <% if current_admin.role == 'admin' %>
+                <%= link_to "Admin Dashboard", admin_path, class: "block px-4 py-2 hover:bg-indigo-100 text-gray-700" %>
+              <% else %>
+                <%= link_to "User Profile", pages_profile_path, class: "block px-4 py-2 hover:bg-indigo-100 text-gray-700" %>
+              <% end %>
+              <%= link_to "Logout", destroy_admin_session_path, method: :delete, class: "block px-4 py-2 hover:bg-indigo-100 text-gray-700" %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to new_admin_session_path, class: nav_link_classes do %>
+            <%= icon 'fa-solid', 'user', class: "w-5 h-5" %>
+            <span>Sign in</span>
+          <% end %>
+        <% end %>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <div class="lg:hidden">
+        <button id="mobile-menu-button" aria-label="Toggle Menu" class="text-gray-700 hover:text-indigo-600 focus:outline-none">
+          <%= icon 'fa-solid', 'bars', class: "w-6 h-6" %>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden mt-2 bg-white rounded-md shadow-lg py-4 px-6 space-y-4">
+      <%= link_to contact_path, class: mobile_link_classes do %>
+        <%= icon 'fa-solid', 'phone', class: "w-5 h-5" %>
+        <span>Contact</span>
+      <% end %>
+
+      <%= link_to about_path, class: mobile_link_classes do %>
+        <%= icon 'fa-solid', 'info-circle', class: "w-5 h-5" %>
+        <span>About</span>
+      <% end %>
+
+      <hr class="border-gray-200">
+
+      <%= link_to cart_path, class: mobile_link_classes do %>
+        <%= icon 'fa-solid', 'shopping-cart', class: "w-5 h-5" %>
+        <span>Cart</span>
+      <% end %>
+
+      <% if admin_signed_in? %>
+        <% if current_admin.role == 'admin' %>
+          <%= link_to admin_path, class: mobile_link_classes do %>
+            <%= icon 'fa-solid', 'user-circle', class: "w-5 h-5" %>
+            <span>Admin Dashboard</span>
+          <% end %>
+        <% else %>
+          <%= link_to pages_profile_path, class: mobile_link_classes do %>
+            <%= icon 'fa-solid', 'user-circle', class: "w-5 h-5" %>
+            <span>User Profile</span>
+          <% end %>
+        <% end %>
+        <%= link_to destroy_admin_session_path, method: :delete, class: mobile_link_classes do %>
+          <%= icon 'fa-solid', 'arrow-right-from-bracket', class: "w-5 h-5" %>
+          <span>Logout</span>
+        <% end %>
+      <% else %>
+        <%= link_to new_admin_session_path, class: mobile_link_classes do %>
+          <%= icon 'fa-solid', 'user', class: "w-5 h-5" %>
+          <span>Sign in</span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</nav>

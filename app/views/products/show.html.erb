@@ -1,0 +1,56 @@
+<h1 class="text-3xl font-bold text-center mt-10">Product Show Page</h1>
+
+<div class="flex flex-col md:flex-row justify-center gap-10 py-10 px-4 max-w-7xl mx-auto">
+  
+  <!-- Images Gallery -->
+  <div class="flex flex-wrap justify-center max-w-lg gap-4">
+    <% @product.images.each do |image| %>
+      <%= image_tag image, class: "w-auto h-64 object-contain rounded shadow-md" %>
+    <% end %>
+  </div>
+
+  <!-- Product Details -->
+  <div data-controller="products" data-products-product-value="<%= @product.to_json %>" class="flex flex-col items-start max-w-sm space-y-6">
+    <h1 class="font-bold text-4xl uppercase tracking-wide"><%= @product.name %></h1>
+
+    <p class="text-2xl font-semibold text-gray-900">$<%= number_with_precision(@product.price / 100.0, precision: 2) %></p>
+
+    <p class="text-gray-700 whitespace-pre-wrap"><%= @product.description %></p>
+
+    <div class="w-full">
+      <p class="uppercase text-lg font-semibold mb-3">Size</p>
+      <div class="flex flex-wrap gap-3">
+        <% @product.stocks.each do |stock| %>
+          <% if stock.amount > 0 %>
+            <button 
+              data-action="click->products#selectSize" 
+              value="<%= stock.size %>" 
+              class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition"
+              aria-pressed="false"
+            >
+              <%= stock.size %>
+            </button>
+          <% else %> 
+            <button 
+              disabled 
+              value="<%= stock.size %>" 
+              class="bg-gray-400 text-gray-600 font-semibold py-2 px-4 rounded cursor-not-allowed" 
+              aria-disabled="true"
+            >
+              <%= stock.size %>
+            </button>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="selected-size" aria-live="polite" class="text-gray-700 font-medium"></div>
+    <button 
+      data-action="click->products#addToCart" 
+      class="w-full md:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition"
+      aria-label="Add product to cart"
+    >
+      Add To Cart
+    </button>
+  </div>
+</div>

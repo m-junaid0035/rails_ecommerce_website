@@ -1,2 +1,85 @@
-<h1>Home</h1>
+<!-- Hero Section with Curved Bottom -->
+<div class="bg-gradient-to-br from-indigo-700 via-indigo-800 to-indigo-900 text-white text-center py-35 px-6 relative overflow-hidden">
+  <h1 class="text-5xl font-extrabold mb-6 drop-shadow-lg">Welcome to Ecomm</h1>
+  <p class="text-xl mb-12 max-w-3xl mx-auto drop-shadow-md">
+    Your one-stop shop for all your e-commerce needs!
+  </p>
+  <%= link_to "Shop Now", root_path, class: "bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300" %>
 
+  <!-- Curved SVG Bottom -->
+  <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none" style="height: 80px;">
+    <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path fill="#1e40af" d="M0,32L48,26.7C96,21,192,11,288,5.3C384,0,480,0,576,5.3C672,11,768,21,864,37.3C960,53,1056,75,1152,69.3C1248,64,1344,32,1392,16L1440,0L1440,80L0,80Z"></path>
+    </svg>
+  </div>
+</div>
+
+<!-- Categories Section with Curved Top -->
+<div class="bg-gray-50 pt-24 pb-16 px-4 relative">
+  <!-- Curved SVG Top -->
+  <div class="absolute top-0 left-0 w-full overflow-hidden leading-none -translate-y-full" style="height: 80px;">
+    <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path fill="#f9fafb" d="M0,64L48,53.3C96,43,192,21,288,10.7C384,0,480,0,576,5.3C672,11,768,21,864,26.7C960,32,1056,32,1152,42.7C1248,53,1344,75,1392,85.3L1440,96L1440,0L0,0Z"></path>
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-10">
+    <% @main_categories.each do |category| %>
+      <%= link_to category_path(category), class: "flex flex-col items-center max-w-xs group transition-transform transform hover:scale-105" do %>
+        <h2 class="text-gray-800 font-semibold text-xl text-center mb-6 group-hover:text-indigo-600 transition">
+          <%= category.name %>
+        </h2>
+        <% if category.image.present? %>
+          <%= image_tag category.image, alt: category.name, class: "w-64 h-64 object-contain bg-white rounded-3xl shadow-xl transition-shadow group-hover:shadow-indigo-400/50" %>
+        <% else %>
+          <%= image_tag "http://via.placeholder.com/250", alt: "Placeholder", class: "w-64 h-64 object-contain bg-white rounded-3xl shadow-xl transition-shadow group-hover:shadow-indigo-400/50" %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<!-- Testimonials Section with Curved Bottom -->
+<div class="bg-white py-30 px-6 relative">
+  <h2 class="text-4xl font-bold text-center text-gray-900 mb-14">Customer Testimonials</h2>
+
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-8">
+    <% 3.times do |i| %>
+      <div class="w-full md:w-1/3 px-4">
+        <div class="bg-indigo-50 rounded-3xl shadow-lg p-8 h-full flex flex-col justify-between hover:shadow-indigo-300 transition-shadow duration-300">
+          <p class="text-gray-800 text-lg mb-6 italic leading-relaxed">
+            "I've been shopping on Ecomm for years, and it's always been a fantastic experience!"
+          </p>
+          <p class="text-indigo-700 font-semibold text-right">- Jane Doe</p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Curved SVG Bottom -->
+  <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none" style="height: 80px;">
+    <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path fill="#f3f4f6" d="M0,32L48,26.7C96,21,192,11,288,5.3C384,0,480,0,576,5.3C672,11,768,21,864,37.3C960,53,1056,75,1152,69.3C1248,64,1344,32,1392,16L1440,0L1440,80L0,80Z"></path>
+    </svg>
+  </div>
+</div>
+
+<!-- Newsletter Section with Curved Top -->
+<div class="bg-indigo-700 text-white py-20 px-6 relative">
+  <!-- Curved SVG Top -->
+  <div class="absolute top-0 left-0 w-full overflow-hidden leading-none -translate-y-full" style="height: 80px;">
+    <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path fill="#4338ca" d="M0,64L48,53.3C96,43,192,21,288,10.7C384,0,480,0,576,5.3C672,11,768,21,864,26.7C960,32,1056,32,1152,42.7C1248,53,1344,75,1392,85.3L1440,96L1440,0L0,0Z"></path>
+    </svg>
+  </div>
+
+  <h2 class="text-3xl font-bold mb-8 text-center max-w-xl mx-auto drop-shadow-lg">Stay Updated</h2>
+  <p class="mb-10 max-w-lg mx-auto text-center text-indigo-200 leading-relaxed">
+    Subscribe to our newsletter for the latest updates and offers.
+  </p>
+  
+  <%= form_with url: root_path, method: :post, local: true, class: "flex justify-center max-w-md mx-auto" do %>
+    <%= email_field_tag :email, nil, placeholder: "Enter your email", class: "p-4 rounded-l-full text-white flex-grow focus:outline-none focus:ring-4 focus:ring-indigo-300" %>
+    <%= submit_tag "Subscribe", class: "bg-white hover:bg-indigo-800 cursor-pointer text-black font-semibold py-4 px-8 rounded-r-full transition duration-300" %>
+  <% end %>
+</div>

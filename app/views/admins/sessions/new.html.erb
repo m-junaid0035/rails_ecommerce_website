@@ -1,0 +1,49 @@
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 px-6 sm:px-12 lg:px-24">
+  <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-10 sm:p-12 animate-fadeIn">
+    <div class="mb-10 text-center">
+      <h1 class="text-4xl font-extrabold text-indigo-700 tracking-wide mb-2">Welcome Back!</h1>
+      <p class="text-indigo-600 font-medium text-lg">Lets Log In</p>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-8" }) do |f| %>
+      <div class="space-y-6">
+        <div>
+          <label for="email" class="block text-sm font-semibold text-indigo-700 mb-2">Email Address</label>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true,
+            class: "w-full px-4 py-3 border-2 border-indigo-300 rounded-lg shadow-sm placeholder-indigo-300 text-indigo-900 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-600 transition" %>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-semibold text-indigo-700 mb-2">Password</label>
+          <%= f.password_field :password, autocomplete: "current-password", required: true,
+            class: "w-full px-4 py-3 border-2 border-indigo-300 rounded-lg shadow-sm placeholder-indigo-300 text-indigo-900 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-600 transition" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="flex items-center">
+            <%= f.check_box :remember_me, class: "h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-indigo-300 rounded" %>
+            <%= f.label :remember_me, class: "ml-3 text-sm text-indigo-700 font-medium cursor-pointer" %>
+          </div>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.submit "Log In", class: "w-full py-3 text-white bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-xl shadow-lg hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 font-bold text-lg transition-transform active:scale-95" %>
+      </div>
+    <% end %>
+
+    <div class="mt-8 text-center text-indigo-600 font-semibold">
+      <%= render "admins/shared/links" %>
+    </div>
+  </div>
+
+  <style>
+    @keyframes fadeIn {
+      0% {opacity: 0; transform: translateY(20px);}
+      100% {opacity: 1; transform: translateY(0);}
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.6s ease forwards;
+    }
+  </style>
+</section>

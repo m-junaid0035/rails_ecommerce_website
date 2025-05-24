@@ -1,9 +1,12 @@
 <% content_for :title, "New product" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New product</h1>
+<div class="max-w-4xl mx-auto px-4 md:w-2/3 w-full">
+  <h1 class="font-extrabold text-4xl mb-8 text-gray-900">New Product</h1>
 
   <%= render "form", admin_product: @admin_product %>
 
-  <%= link_to "Back to products", admin_products_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <div class="mt-6">
+    <%= link_to "Back to products", admin_products_path, 
+        class: "w-full sm:w-auto text-center px-6 py-3 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold transition inline-block" %>
+  </div>
 </div>

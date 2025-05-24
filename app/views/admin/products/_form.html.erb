@@ -1,9 +1,8 @@
 <%= form_with(model: [:admin, admin_product], class: "contents") do |form| %>
   <% if admin_product.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(admin_product.errors.count, "error") %> prohibited this admin_product from being saved:</h2>
-
-      <ul class="list-disc ml-6">
+    <div id="error_explanation" class="bg-red-50 text-red-600 px-4 py-3 rounded-md mt-3 font-semibold">
+      <h2><%= pluralize(admin_product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <ul class="list-disc ml-6 mt-1 space-y-1">
         <% admin_product.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -12,74 +11,85 @@
   <% end %>
 
   <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_product.errors[:name].none?, "border-red-400 focus:outline-red-600": admin_product.errors[:name].any?}] %>
+    <%= form.label :name, class: "block font-semibold text-gray-700" %>
+    <%= form.text_field :name, class: [
+      "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full text-gray-900 placeholder-gray-400",
+      admin_product.errors[:name].any? ? "border-red-500 focus:outline-red-600 focus:ring-red-600" : "border-gray-300 focus:outline-teal-600 focus:ring-teal-600"
+    ] %>
   </div>
 
   <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_product.errors[:description].none?, "border-red-400 focus:outline-red-600": admin_product.errors[:description].any?}] %>
+    <%= form.label :description, class: "block font-semibold text-gray-700" %>
+    <%= form.textarea :description, rows: 4, class: [
+      "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full text-gray-900 placeholder-gray-400",
+      admin_product.errors[:description].any? ? "border-red-500 focus:outline-red-600 focus:ring-red-600" : "border-gray-300 focus:outline-teal-600 focus:ring-teal-600"
+    ] %>
   </div>
 
-  <div class="relative">
-  <!-- Display uploaded images -->
-  <% if admin_product.images.attached? %>
-    <div class="flex flex-wrap gap-4 mb-4">
-      <% admin_product.images.each do |image| %>
-        <%= image_tag url_for(image), class: "w-20 h-20 object-cover rounded-md shadow-sm border border-gray-200" %>
-      <% end %>
+  <div class="relative mb-6">
+    <% if admin_product.images.attached? %>
+      <div class="flex flex-wrap gap-4 mb-4">
+        <% admin_product.images.each do |image| %>
+          <%= image_tag url_for(image), class: "w-20 h-20 object-cover rounded-md shadow-sm border border-gray-200" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="flex items-center space-x-3 mb-2">
+      <label for="image_upload" class="cursor-pointer inline-flex items-center px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-md shadow transition">
+        📁 Browse
+      </label>
+      <span id="file-name" class="text-sm text-gray-600 truncate">No file chosen</span>
     </div>
-  <% end %>
 
-  <!-- Custom styled button and file name (on new line) -->
-  <div class="flex items-center space-x-3 mb-2">
-    <label for="image_upload" class="cursor-pointer inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-md shadow">
-      📁 Browse
-    </label>
-    <span id="file-name" class="text-sm text-gray-600 truncate">No file chosen</span>
-  </div>
-
-  <!-- Hidden file input -->
-  <%= form.file_field :images,
-    multiple: true,
-    id: "image_upload",
-    class: "absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer",
-    accept: "image/*",
-    onchange: "document.getElementById('file-name').textContent = Array.from(this.files).map(f => f.name).join(', ') || 'No file chosen';"
-  %>
+    <%= form.file_field :images,
+      multiple: true,
+      id: "image_upload",
+      class: "absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer",
+      accept: "image/*",
+      onchange: "document.getElementById('file-name').textContent = Array.from(this.files).map(f => f.name).join(', ') || 'No file chosen';"
+    %>
   </div>
 
   <div class="my-5">
-    <%= form.label :price %>
-    <%= form.number_field :price, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_product.errors[:price].none?, "border-red-400 focus:outline-red-600": admin_product.errors[:price].any?}] %>
+    <%= form.label :price, class: "block font-semibold text-gray-700" %>
+    <%= form.number_field :price, class: [
+      "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full text-gray-900 placeholder-gray-400",
+      admin_product.errors[:price].any? ? "border-red-500 focus:outline-red-600 focus:ring-red-600" : "border-gray-300 focus:outline-teal-600 focus:ring-teal-600"
+    ] %>
   </div>
 
   <div class="my-6">
-  <%= form.label :category_id, "Select Category", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.label :category_id, "Select Category", class: "block text-sm font-semibold text-gray-700 mb-2" %>
 
-  <%= form.collection_select :category_id, Category.order(:name), :id, :name,
-    { prompt: "Choose a category" },
-    class: [
-      "block w-full px-4 py-2 rounded-md shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none",
-      "bg-white border",
-      admin_product.errors[:category_id].any? ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"
-    ] %>
+    <%= form.collection_select :category_id, Category.order(:name), :id, :name,
+      { prompt: "Choose a category" },
+      class: [
+        "block w-full px-4 py-2 rounded-md shadow-sm text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none",
+        "bg-white border",
+        admin_product.errors[:category_id].any? ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-teal-500"
+      ] %>
 
-  <% if admin_product.errors[:category_id].any? %>
-    <p class="text-sm text-red-600 mt-1"><%= admin_product.errors[:category_id].first %></p>
-  <% end %>
+    <% if admin_product.errors[:category_id].any? %>
+      <p class="text-sm text-red-600 mt-1"><%= admin_product.errors[:category_id].first %></p>
+    <% end %>
   </div>
 
   <div class="my-5 flex items-center gap-2">
-    <%= form.label :active %>
-    <%= form.checkbox :active, class: ["block shadow-sm rounded-md border order-first h-5 w-5", {"border-gray-400 focus:outline-blue-600": admin_product.errors[:active].none?, "border-red-400 focus:outline-red-600": admin_product.errors[:active].any?}] %>
+    <%= form.label :active, class: "font-semibold text-gray-700" %>
+    <%= form.checkbox :active, class: [
+      "block shadow-sm rounded-md border order-first h-5 w-5",
+      admin_product.errors[:active].any? ? "border-red-500 focus:outline-red-600" : "border-gray-300 focus:outline-teal-600"
+    ] %>
   </div>
 
-  <div class="my-5">
-    <%= link_to "Product Stock", admin_product_stocks_path(admin_product), class:"underline" %>
-  </div>
+  <% if admin_product.persisted? %>
+    <div class="my-5">
+      <%= link_to "Product Stock", admin_product_stocks_path(admin_product), class: "underline text-teal-600 hover:text-teal-800 font-medium" %>
+    </div>
+  <% end %>
 
   <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit "Save Product", class: "w-full sm:w-auto rounded-md px-4 py-2.5 bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-700 hover:to-teal-600 text-white font-semibold shadow-lg transition-transform transform hover:scale-105 cursor-pointer" %>
   </div>
 <% end %>

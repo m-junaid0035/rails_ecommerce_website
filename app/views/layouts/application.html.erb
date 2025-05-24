@@ -25,8 +25,32 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+    <%= render "shared/navbar" %>
+   <main class="container mx-auto mt-28 max-w-7xl px-2 sm:px-6 lg:px-8 bg-white rounded-lg shadow-md p-6">
+  <%= yield %>
+</main>
+
+    <%= render "shared/footer" %>
   </body>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+
+    // Toggle menu visibility
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+
+    // Close menu if clicking outside
+    document.addEventListener('click', (event) => {
+      const isClickInsideMenu = menu.contains(event.target);
+      const isClickOnButton = btn.contains(event.target);
+
+      if (!isClickInsideMenu && !isClickOnButton) {
+        menu.classList.add('hidden');
+      }
+    });
+  });
+</script>
 </html>

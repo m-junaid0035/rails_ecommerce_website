@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "pages/profile"
+  get "pages/shop"
+  get "pages/about"
+  get "pages/contact"
   namespace :admin do
     resources :orders
     resources :products do
@@ -7,7 +11,13 @@ Rails.application.routes.draw do
     resources :products
     resources :categories
   end
-  devise_for :admins
+devise_for :admins, controllers: {
+  sessions: 'admins/sessions',
+  registrations: 'admins/registrations',
+  passwords: 'admins/passwords'
+}
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -24,6 +34,18 @@ Rails.application.routes.draw do
   authenticated :admin_user do
     root to: "admin#index", as: :admin_root
   end
+  resources :categories, only: [:show]
+  resources :products, only: [:show]
 
   get "admin" => "admin#index"
+  get "cart" => "carts#show"
+  post "checkout" => "checkouts#create"
+  get "success" => "checkouts#success"
+  get "cancel" => "checkouts#cancel"
+  post "/webhooks/stripe" => "webhooks#stripe"
+  
+  get "shop", to: "pages#shop", as: :shop
+  get "about", to: "pages#about", as: :about
+  get "contact", to: "pages#contact", as: :contact
+
 end

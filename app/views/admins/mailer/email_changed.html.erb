@@ -1,0 +1,13 @@
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+  <%= t('devise.mailer.email_change.greeting', email: @email, default: "Hello %{email}!") %>
+</p>
+
+<% if @resource.try(:unconfirmed_email?) %>
+  <p style="font-family: Arial, sans-serif; font-size: 16px; color: #555;">
+    <%= t('devise.mailer.email_change.pending_confirmation', email: @resource.unconfirmed_email, default: "We're contacting you to notify you that your email is being changed to %{email}.") %>
+  </p>
+<% else %>
+  <p style="font-family: Arial, sans-serif; font-size: 16px; color: #555;">
+    <%= t('devise.mailer.email_change.completed', email: @resource.email, default: "We're contacting you to notify you that your email has been changed to %{email}.") %>
+  </p>
+<% end %>

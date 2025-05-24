@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="scroll-smooth">
   <head>
     <title><%= content_for(:title) || "Ecomm" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -10,66 +10,80 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
- 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-<body>
-  <main class="flex w-full">
-    <nav class="flex">
-      <div class="w-64 p-4 h-screen bg-gray-600 sticky top-0">
-        <div class="flex">
-          <%= image_tag 'logo.png' , class: 'w-16' %>
-            <h1 class="text-md py-2 mt-3 text-white font-bold hidden md:block">Ecomm Admin</h1>
-        </div>
-        <ul class="flex flex-col text-gray-50">
-          <li>
-            <%= link_to admin_path, class: "block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-              <%= icon('fa-solid', 'gauge-high' , class: 'mr-2' ) %><span class="hidden md:inline-block">
-                  Dashboard</span>
-                <% end %>
-          </li>
-          <li>
-            <%= link_to admin_products_path, class: "block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-              <%= icon('fa-solid', 'cart-shopping' , class: 'mr-2' ) %><span class="hidden md:inline-block">
-                  Products</span>
-                <% end %>
-          </li>
-          <li>
-            <%= link_to admin_categories_path, class: "block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-              <%= icon('fa-solid', 'list' , class: 'mr-2' ) %><span class="hidden md:inline-block">
-                  Categories </span>
-                <% end %>
-          </li>
-          <li>
-            <%= link_to admin_orders_path, class: "block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-              <%= icon('fa-solid', 'truck-fast' , class: 'mr-2' ) %><span class="hidden md:inline-block">
-                  Orders</span>
-                <% end %>
-          </li>
-          <li>
-            <%= link_to destroy_admin_session_path, data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to sign out?"}, class: "block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-              <%= icon('fa-solid', 'sign-out', class: 'mr-2' ) %><span class="hidden md:inline-block">
-                  Sign out</span>
-                <% end %>
-          </li>
-        </ul>
+  <body class="bg-gray-100 flex flex-col min-h-screen">
+    <header class="bg-gradient-to-r from-purple-700 via-indigo-800 to-indigo-900 text-white flex items-center justify-between px-4 py-3 md:hidden sticky top-0 z-30 shadow-lg">
+      <div class="flex items-center space-x-3">
+        <button id="sidebarToggle" aria-label="Toggle sidebar" class="text-white focus:outline-none focus:ring-2 focus:ring-white rounded-md">
+          <i class="fas fa-bars fa-lg"></i>
+        </button>
+        <%= image_tag 'logo.png', class: 'w-10' %>
+        <h1 class="font-bold text-lg tracking-wide">Ecomm Admin</h1>
       </div>
-    </nav>
-    <div class="w-full p-8">
-      <%= yield %>
-    </div>
-  </main>
-</body>
+    </header>
 
+    <div class="flex flex-1 overflow-hidden">
+      <!-- Sidebar -->
+      <nav id="sidebar"
+        class="fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-gray-800 via-indigo-900 to-indigo-950 p-6 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-xl md:translate-x-0 md:static md:flex-shrink-0 rounded-tr-3xl rounded-br-3xl">
+
+        <div class="flex items-center mb-8">
+          <%= image_tag 'logo.png', class: 'w-16' %>
+          <h1 class="text-white font-extrabold text-xl ml-4 tracking-tight hidden md:block drop-shadow-lg">Ecomm Admin</h1>
+        </div>
+
+        <ul class="flex flex-col space-y-3 text-gray-100">
+          <%# Highlight active link example, you can enhance logic to add 'active' class based on current page %>
+          <% nav_items = [
+              { path: admin_path, icon: 'gauge-high', label: 'Dashboard' },
+              { path: admin_products_path, icon: 'cart-shopping', label: 'Products' },
+              { path: admin_categories_path, icon: 'list', label: 'Categories' },
+              { path: admin_orders_path, icon: 'truck-fast', label: 'Orders' },
+              { path: destroy_admin_session_path, icon: 'sign-out', label: 'Sign out', method: :delete, confirm: "Are you sure you want to sign out?" }
+            ] %>
+
+          <% nav_items.each do |item| %>
+            <li>
+              <%= link_to item[:path], data: { turbo_method: item[:method], turbo_confirm: item[:confirm] }, class: "flex items-center px-4 py-3 rounded-lg hover:bg-indigo-600 hover:shadow-lg transition shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400", method: item[:method] do %>
+                <%= icon('fa-solid', item[:icon], class: "mr-4 text-xl text-indigo-300 group-hover:text-white") %>
+                <span class="hidden md:inline font-semibold tracking-wide"><%= item[:label] %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="flex-1 overflow-auto p-6 md:p-10 bg-gray-50 rounded-tl-3xl">
+        <%= yield %>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('-translate-x-full');
+        });
+
+        // Optional: Close sidebar on clicking outside (mobile)
+        document.addEventListener('click', (e) => {
+          if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target) && window.innerWidth < 768) {
+            sidebar.classList.add('-translate-x-full');
+          }
+        });
+      });
+    </script>
+  </body>
 </html>

@@ -1,15 +1,28 @@
 <% content_for :title, "Showing category" %>
 
-<div class="md:w-2/3 w-full">
+<div class="md:w-2/3 w-full mx-auto px-4">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <p id="notice" class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" role="alert" aria-live="polite">
+      <%= notice %>
+    </p>
   <% end %>
 
-  <h1 class="font-bold text-4xl">Showing category</h1>
+  <!-- Outer white box wrapping heading and category details, no inner box -->
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h1 class="font-bold text-4xl mb-6">Showing category</h1>
+    <%= render @admin_category %>
+  </div>
 
-  <%= render @admin_category %>
+  <!-- Buttons outside the white box, but inside outer container -->
+  <div class="flex flex-col sm:flex-row sm:space-x-2 mt-6">
+    <%= link_to "Edit this category", edit_admin_category_path(@admin_category), 
+        class: "w-full sm:w-auto text-center rounded-md px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium transition" %>
 
-  <%= link_to "Edit this category", edit_admin_category_path(@admin_category), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to categories", admin_categories_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this category", [:admin, @admin_category], method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+    <%= link_to "Back to categories", admin_categories_path, 
+        class: "w-full sm:w-auto text-center rounded-md px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium transition mt-2 sm:mt-0" %>
+
+    <%= button_to "Destroy this category", [:admin, @admin_category], method: :delete, form_class: "w-full sm:w-auto mt-2 sm:mt-0", 
+        class: "rounded-md px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-medium cursor-pointer transition", 
+        data: { turbo_confirm: "Are you sure?" } %>
+  </div>
 </div>

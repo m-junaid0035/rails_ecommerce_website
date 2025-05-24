@@ -1,0 +1,26 @@
+<div class="space-y-3 text-center text-indigo-700 font-medium">
+  <% if controller_name != 'sessions' %>
+    <%= link_to "Log in", new_admin_session_path,
+                class: "block hover:text-indigo-900 transition-colors duration-200" %>
+  <% end %>
+
+  <% if devise_mapping.registerable? && controller_name != 'registrations' %>
+    <%= link_to "Sign up", new_admin_registration_path,
+                class: "block hover:text-indigo-900 transition-colors duration-200" %>
+  <% end %>
+
+  <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+    <%= link_to "Forgot your password?", new_admin_password_path,
+                class: "block hover:text-indigo-900 transition-colors duration-200" %>
+  <% end %>
+
+  <% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+    <%= link_to "Didn't receive confirmation instructions?", new_admin_confirmation_path,
+                class: "block hover:text-indigo-900 transition-colors duration-200" %>
+  <% end %>
+
+  <% if devise_mapping.lockable? && Admin.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+    <%= link_to "Didn't receive unlock instructions?", new_admin_unlock_path,
+                class: "block hover:text-indigo-900 transition-colors duration-200" %>
+  <% end %>
+</div>

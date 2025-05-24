@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import {Chart, registerables } from 'chart.js'
 
 Chart.register(...registerables)
+console.log("halel o o  oooooooooooooo")
 
 // Connects to data-controller="dashboard"
 export default class extends Controller {

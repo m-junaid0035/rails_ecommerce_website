@@ -1,0 +1,66 @@
+<section class="bg-white py-20 px-4">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-4xl font-extrabold text-gray-800 mb-4">Contact Us</h2>
+    <p class="text-lg text-gray-600 mb-12">
+      We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
+    </p>
+
+    <form id="contactForm" class="space-y-6 max-w-2xl mx-auto text-left">
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text" name="name" id="name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+      </div>
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" name="email" id="email" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+      </div>
+      <div>
+        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+        <textarea name="message" id="message" rows="5" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+      </div>
+
+      <div>
+        <button type="submit" class="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition">
+          Send Message
+        </button>
+      </div>
+      <p id="formMessage" class="text-center text-sm text-green-600 mt-4 hidden">Message sent successfully!</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = {
+      name: form.name.value,
+      email: form.email.value,
+      message: form.message.value
+    };
+
+    try {
+      const response = await fetch('/contact_email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector("[name='csrf-token']").content
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        form.reset();
+        document.getElementById('formMessage').classList.remove('hidden');
+        document.getElementById('formMessage').textContent = "Message sent successfully!";
+      } else {
+        throw new Error("Failed to send");
+      }
+    } catch (error) {
+      document.getElementById('formMessage').classList.remove('hidden');
+      document.getElementById('formMessage').textContent = "Something went wrong. Please try again.";
+      document.getElementById('formMessage').classList.add('text-red-600');
+    }
+  });
+</script>

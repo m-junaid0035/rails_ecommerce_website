@@ -1,9 +1,8 @@
 <%= form_with(model: [:admin, admin_category], class: "contents") do |form| %>
   <% if admin_category.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(admin_category.errors.count, "error") %> prohibited this admin_category from being saved:</h2>
-
-      <ul class="list-disc ml-6">
+    <div id="error_explanation" class="bg-red-50 text-red-600 px-4 py-3 rounded-md mt-3 font-semibold">
+      <h2><%= pluralize(admin_category.errors.count, "error") %> prohibited this category from being saved:</h2>
+      <ul class="list-disc ml-6 mt-1 space-y-1">
         <% admin_category.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -12,43 +11,46 @@
   <% end %>
 
   <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_category.errors[:name].none?, "border-red-400 focus:outline-red-600": admin_category.errors[:name].any?}] %>
+    <%= form.label :name, class: "block font-semibold text-gray-700" %>
+    <%= form.text_field :name, class: [
+      "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full text-gray-900 placeholder-gray-400",
+      admin_category.errors[:name].any? ? "border-red-500 focus:outline-red-600 focus:ring-red-600" : "border-gray-300 focus:outline-blue-600 focus:ring-blue-600"
+    ] %>
   </div>
 
   <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_category.errors[:description].none?, "border-red-400 focus:outline-red-600": admin_category.errors[:description].any?}] %>
+    <%= form.label :description, class: "block font-semibold text-gray-700" %>
+    <%= form.textarea :description, rows: 4, class: [
+      "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full text-gray-900 placeholder-gray-400",
+      admin_category.errors[:description].any? ? "border-red-500 focus:outline-red-600 focus:ring-red-600" : "border-gray-300 focus:outline-blue-600 focus:ring-blue-600"
+    ] %>
   </div>
 
   <div class="my-5">
-  <%= form.label :image, class: "block font-medium text-gray-700 mb-2" %>
+    <%= form.label :image, "Category Image", class: "block font-semibold text-gray-700 mb-2" %>
 
-  <div class="relative">
-    <!-- Fake custom button -->
-    <div class="flex items-center">
-      <label for="image_upload" class="cursor-pointer inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-md shadow">
-        📁 Browse
-      </label>
-      <span id="file-name" class="ml-3 text-sm text-gray-600 truncate">No file chosen</span>
+    <div class="relative">
+      <div class="flex items-center space-x-3">
+        <label for="image_upload" class="cursor-pointer inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-md shadow transition">
+          📁 Browse
+        </label>
+        <span id="file-name" class="text-sm text-gray-600 truncate">No file chosen</span>
+      </div>
+
+      <%= form.file_field :image,
+        id: "image_upload",
+        class: "absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer",
+        accept: "image/*",
+        onchange: "document.getElementById('file-name').textContent = this.files[0]?.name || 'No file chosen';"
+      %>
     </div>
 
-    <!-- Hidden file input -->
-    <%= form.file_field :image,
-      id: "image_upload",
-      class: "absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer",
-      accept: "image/*",
-      onchange: "document.getElementById('file-name').textContent = this.files[0]?.name || 'No file chosen';"
-    %>
+    <% if admin_category.errors[:image].any? %>
+      <p class="mt-2 text-sm text-red-600"><%= admin_category.errors[:image].first %></p>
+    <% end %>
   </div>
 
-  <% if admin_category.errors[:image].any? %>
-    <p class="mt-2 text-sm text-red-600"><%= admin_category.errors[:image].first %></p>
-  <% end %>
-</div>
-
-
   <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit "Save Category", class: "w-full sm:w-auto rounded-md px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold shadow transition cursor-pointer" %>
   </div>
 <% end %>

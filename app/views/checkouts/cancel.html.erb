@@ -1,0 +1,12 @@
+<div class="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-4">
+  <h1 class="text-4xl font-bold text-red-600 mb-6">Order Cancelled</h1>
+  
+  <p class="text-lg text-gray-700 max-w-xl text-center mb-6">
+    We're sorry to see you cancel your order. If you have any questions or need assistance, please contact our support team.
+  </p>
+  
+  <div class="flex gap-4">
+    <%= link_to "Go Back to Shop", root_path, class: "px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition" %>
+    <%= link_to "Contact Support", support_path, class: "px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition" %>
+  </div>
+</div>

@@ -1,4 +1,7 @@
 class AdminController < ApplicationController
+  before_action :authenticate_admin!
+  before_action :authorize_admin!
+
   layout 'admin'
   before_action :authenticate_admin!
 
@@ -27,5 +30,10 @@ class AdminController < ApplicationController
 
       @revenue_by_day = complete_ordered_array_with_current_last 
     end
+  end
+  private
+
+  def authorize_admin!
+    redirect_to root_path, alert: "Not authorized" unless current_admin&.role == 'admin'
   end
 end
