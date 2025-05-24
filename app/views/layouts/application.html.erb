@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="scroll-smooth">
   <head>
     <title><%= content_for(:title) || "Ecomm" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -10,47 +10,59 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
+    <!-- Favicon -->
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
- 
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <!-- Tailwind/App Styles -->
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
     <%= render "shared/navbar" %>
-   <main class="container mx-auto mt-28 max-w-7xl px-2 sm:px-6 lg:px-8 bg-white rounded-lg shadow-md p-6">
-  <%= yield %>
-</main>
 
+    <!-- Main Content -->
+    <main class="flex-1 container mx-auto mt-28 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <%= yield %>
+      </div>
+    </main>
+
+    <!-- Footer -->
     <%= render "shared/footer" %>
-  </body>
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('mobile-menu-button');
-    const menu = document.getElementById('mobile-menu');
 
-    // Toggle menu visibility
-    btn.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
+    <!-- Mobile Menu Toggle Script -->
+<script>
+  document.addEventListener("turbo:load", () => {
+    const btn = document.getElementById("mobile-menu-button");
+    const menu = document.getElementById("mobile-menu");
+
+    if (!btn || !menu) return;
+
+    // Remove old listeners (important to avoid duplicates)
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menu.classList.toggle("hidden");
     });
 
-    // Close menu if clicking outside
-    document.addEventListener('click', (event) => {
-      const isClickInsideMenu = menu.contains(event.target);
-      const isClickOnButton = btn.contains(event.target);
-
-      if (!isClickInsideMenu && !isClickOnButton) {
-        menu.classList.add('hidden');
+    // Hide menu on outside click
+    document.addEventListener("click", (e) => {
+      if (!menu.contains(e.target) && !newBtn.contains(e.target)) {
+        menu.classList.add("hidden");
       }
     });
   });
 </script>
+
+
+  </body>
 </html>

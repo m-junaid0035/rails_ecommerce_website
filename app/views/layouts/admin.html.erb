@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <title><%= content_for(:title) || "Ecomm" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -13,7 +13,6 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
@@ -21,6 +20,7 @@
   </head>
 
   <body class="bg-gray-100 flex flex-col min-h-screen">
+    <!-- Mobile Header -->
     <header class="bg-gradient-to-r from-purple-700 via-indigo-800 to-indigo-900 text-white flex items-center justify-between px-4 py-3 md:hidden sticky top-0 z-30 shadow-lg">
       <div class="flex items-center space-x-3">
         <button id="sidebarToggle" aria-label="Toggle sidebar" class="text-white focus:outline-none focus:ring-2 focus:ring-white rounded-md">
@@ -34,7 +34,7 @@
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
       <nav id="sidebar"
-        class="fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-gray-800 via-indigo-900 to-indigo-950 p-6 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-xl md:translate-x-0 md:static md:flex-shrink-0 rounded-tr-3xl rounded-br-3xl">
+        class="fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-gray-800 via-indigo-900 to-indigo-950 p-6 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-xl md:translate-x-0 md:static md:flex-shrink-0 rounded-tr-3xl rounded-br-3xl md:flex">
 
         <div class="flex items-center mb-8">
           <%= image_tag 'logo.png', class: 'w-16' %>
@@ -42,7 +42,6 @@
         </div>
 
         <ul class="flex flex-col space-y-3 text-gray-100">
-          <%# Highlight active link example, you can enhance logic to add 'active' class based on current page %>
           <% nav_items = [
               { path: admin_path, icon: 'gauge-high', label: 'Dashboard' },
               { path: admin_products_path, icon: 'cart-shopping', label: 'Products' },
@@ -53,7 +52,7 @@
 
           <% nav_items.each do |item| %>
             <li>
-              <%= link_to item[:path], data: { turbo_method: item[:method], turbo_confirm: item[:confirm] }, class: "flex items-center px-4 py-3 rounded-lg hover:bg-indigo-600 hover:shadow-lg transition shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400", method: item[:method] do %>
+              <%= link_to item[:path], class: "group flex items-center px-4 py-3 rounded-lg hover:bg-indigo-600 hover:shadow-lg transition shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400", data: { turbo_method: item[:method], turbo_confirm: item[:confirm] }, method: item[:method] do %>
                 <%= icon('fa-solid', item[:icon], class: "mr-4 text-xl text-indigo-300 group-hover:text-white") %>
                 <span class="hidden md:inline font-semibold tracking-wide"><%= item[:label] %></span>
               <% end %>
@@ -69,21 +68,35 @@
     </div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const sidebar = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('sidebarToggle');
+  function initSidebarToggle() {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
 
-        toggleBtn.addEventListener('click', () => {
-          sidebar.classList.toggle('-translate-x-full');
-        });
+    if (!sidebar || !toggleBtn) return;
 
-        // Optional: Close sidebar on clicking outside (mobile)
-        document.addEventListener('click', (e) => {
-          if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target) && window.innerWidth < 768) {
-            sidebar.classList.add('-translate-x-full');
-          }
-        });
-      });
-    </script>
+    // Remove old event listeners by cloning
+    const newToggleBtn = toggleBtn.cloneNode(true);
+    toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
+
+    newToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // Outside click closes sidebar (mobile only)
+    document.addEventListener('click', (e) => {
+      if (
+        window.innerWidth < 768 &&
+        !sidebar.contains(e.target) &&
+        !newToggleBtn.contains(e.target)
+      ) {
+        sidebar.classList.add('-translate-x-full');
+      }
+    });
+  }
+
+  document.addEventListener('turbo:load', initSidebarToggle);
+</script>
+
   </body>
 </html>
